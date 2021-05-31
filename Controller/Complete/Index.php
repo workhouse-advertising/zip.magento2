@@ -7,6 +7,7 @@ use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Result\Page;
 use Zip\ZipPayment\Controller\Standard\AbstractStandard;
 use Zip\ZipPayment\MerchantApi\Lib\Model\CommonUtil;
+use Magento\Framework\Encryption\EncryptorInterface;
 
 /**
  * @author    Zip Plugin Team <integrations@zip.co>
@@ -105,8 +106,13 @@ class Index extends AbstractStandard
                     $order->setState($orderState)->setStatus($orderStatus);
                     $order->save();
 
-                    // Redirect to success page
-                    return $this->getResponse()->setRedirect($this->getSuccessUrl());
+                    $resultRedirect = $this->resultRedirectFactory->create();
+                    /** @var EncryptorInterface $encryptor */
+                    $encryptor = $this->_objectManager->get(EncryptorInterface::class);
+                    $orderId = urlencode($encryptor->encrypt($order->getId()));
+                     // Redirect to success page with encrypted order id
+                    $resultRedirect->setPath('checkout/onepage/success',['order_id' => $orderId]);
+                    return $resultRedirect;
                 } catch (\Magento\Framework\Exception\LocalizedException $e) {
                     $this->_messageManager->addErrorMessage($e->getMessage());
                     $this->_logger->debug($e->getMessage());
