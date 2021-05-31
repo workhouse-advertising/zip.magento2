@@ -5,11 +5,11 @@
 	 *
 	 */
 
-	namespace ZipMoney\ZipMoneyPayment\Plugin\Controller\Onepage;
+	namespace ZipMoney\ZipPayment\Plugin\Controller\Onepage;
     use Magento\Framework\Encryption\EncryptorInterface;
 	/**
 	 * Class Success
-	 * @package ZipMoney\ZipMoneyPayment\Plugin\Controller\Onepage
+	 * @package ZipMoney\ZipPayment\Plugin\Controller\Onepage
 	 */
 	class Success
 	{
